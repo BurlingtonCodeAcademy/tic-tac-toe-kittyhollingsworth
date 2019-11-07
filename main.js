@@ -1,5 +1,6 @@
 var board = new Map([[0, ''], [1, ''], [2, ''], [3, ''], [4, ''], [5, ''], [6, ''], [7, ''], [8, '']]);
 var turn = true;
+let turnCount = 0;
 
 function buildBoard() {
     document.getElementById('cell-8').innerHTML = board.get(8);
@@ -12,7 +13,6 @@ function buildBoard() {
     document.getElementById('cell-6').innerHTML = board.get(6);
     document.getElementById('cell-7').innerHTML = board.get(7);
 };
-buildBoard();
 
 let startButton = document.getElementById('start');
 let playerTurn = document.getElementById('playerTurn');
@@ -28,26 +28,80 @@ let cell8 = document.getElementById('cell-8');
 
 
 function setCell(key, value) {
-    board.set(key, value)
+    board.set(key, value);
+    turnCount++;
+    winConditions();
     buildBoard();
 };
+
+function win() {
+    if (turn) {
+        playerTurn.innerHTML = "Player O Wins!";
+    } else {
+        playerTurn.innerHTML = "Player X Wins!";
+    }
+    resetGame();
+};
+
+function resetGame() {
+    startButton.disabled = false;
+}
+
+function winConditions() {
+    if (board.get(0) === board.get(1) && board.get(0) === board.get(2) && board.get(0) != '') {
+        win();
+    } else if (board.get(3) === board.get(4) && board.get(3) === board.get(5) && board.get(3) != '') {
+        win();
+    } else if (board.get(6) === board.get(7) && board.get(6) === board.get(8) && board.get(6) != '') {
+        win();
+    } else if (board.get(0) === board.get(3) && board.get(0) === board.get(6) && board.get(0) != '') {
+        win();
+    } else if (board.get(1) === board.get(4) && board.get(1) === board.get(7) && board.get(1) != '') {
+        win();
+    } else if (board.get(2) === board.get(5) && board.get(2) === board.get(8) && board.get(2) != '') {
+        win();
+    } else if (board.get(0) === board.get(4) && board.get(0) === board.get(8) && board.get(0) != '') {
+        win();
+    } else if (board.get(2) === board.get(4) && board.get(2) === board.get(6) && board.get(2) != '') {
+        win();
+    } else if (turnCount === 9) {
+        playerTurn.innerHTML = "It's a TIE!";
+        resetGame();
+    };
+
+};
 startButton.addEventListener('click', disableButton);
-cell0.addEventListener('click', function() {clickCell(0)});
-cell1.addEventListener('click', function() {clickCell(1)});
-cell2.addEventListener('click', function() {clickCell(2)});
-cell3.addEventListener('click', function() {clickCell(3)});
-cell4.addEventListener('click', function() {clickCell(4)});
-cell5.addEventListener('click', function() {clickCell(5)});
-cell6.addEventListener('click', function() {clickCell(6)});
-cell7.addEventListener('click', function() {clickCell(7)});
-cell8.addEventListener('click', function() {clickCell(8)});
+cell0.addEventListener('click', function () { clickCell(0) });
+cell1.addEventListener('click', function () { clickCell(1) });
+cell2.addEventListener('click', function () { clickCell(2) });
+cell3.addEventListener('click', function () { clickCell(3) });
+cell4.addEventListener('click', function () { clickCell(4) });
+cell5.addEventListener('click', function () { clickCell(5) });
+cell6.addEventListener('click', function () { clickCell(6) });
+cell7.addEventListener('click', function () { clickCell(7) });
+cell8.addEventListener('click', function () { clickCell(8) });
 
 
 function disableButton() {
     this.disabled = true;
+    resetBoard();
     playerTurn.innerHTML = 'Player Xs Turn';
 };
 
+function resetBoard() {
+    board = new Map([[0, ''], [1, ''], [2, ''], [3, ''], [4, ''], [5, ''], [6, ''], [7, ''], [8, '']]);
+    turn = true;
+    turnCount = 0;
+    activateBoard();
+    buildBoard();
+};
+
+function activateBoard(){
+    for(let k = 0; k<=8; k++){
+        let id = "cell-" + k;
+        document.getElementById(id).style.pointerEvents = 'auto';
+    }
+};
 function clickCell(cell) {
     console.log("click " + cell);
     disableCell(cell);
@@ -60,8 +114,8 @@ function clickCell(cell) {
     }
 };
 
-function disableCell(cell){
-    let id = "cell-"+cell;
+function disableCell(cell) {
+    let id = "cell-" + cell;
     document.getElementById(id).style.pointerEvents = 'none';
 };
 
