@@ -119,4 +119,4 @@ function disableCell(cell) {
     document.getElementById(id).style.pointerEvents = 'none';
 };
 
-
+//known bug where you can still click on cells after a game is won
