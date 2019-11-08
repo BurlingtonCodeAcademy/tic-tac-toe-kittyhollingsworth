@@ -36,9 +36,9 @@ function setCell(key, value) {
 
 function win() {
     if (turn) {
-        playerTurn.innerHTML = "Player O Wins!";
-    } else {
         playerTurn.innerHTML = "Player X Wins!";
+    } else {
+        playerTurn.innerHTML = "Player O Wins!";
     }
     resetGame();
 };
@@ -81,7 +81,16 @@ cell6.addEventListener('click', function () { clickCell(6) });
 cell7.addEventListener('click', function () { clickCell(7) });
 cell8.addEventListener('click', function () { clickCell(8) });
 
+function player(){
+    let evenOrOdd = turnCount%2
+    if (evenOrOdd === 0){
+        playerTurn.innerHTML = "Player O's Turn"
+    }else {
+        playerTurn.innerHTML = "Player X's Turn"
+    };
 
+};
+// disables start button first time it is pressed
 function disableButton() {
     this.disabled = true;
     resetBoard();
@@ -102,13 +111,16 @@ function activateBoard(){
         document.getElementById(id).style.pointerEvents = 'auto';
     }
 };
+
 function clickCell(cell) {
     console.log("click " + cell);
     disableCell(cell);
     if (turn) {
+        player();
         setCell(cell, 'X');
         turn = !turn;
     } else {
+        player();
         setCell(cell, 'O');
         turn = !turn;
     }
